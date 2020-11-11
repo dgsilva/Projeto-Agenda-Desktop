@@ -276,7 +276,6 @@ public class TelaAgenda extends javax.swing.JFrame {
        txtTelefone.setText("");
        txtEmail.setText("");
        txtSexo.setText("");
-       txtNome.requestFocus();
     }//GEN-LAST:event_btnNovoActionPerformed
 
     public static void main(String args[]) {
