@@ -6,6 +6,7 @@
 package visao;
 
 import dao.Banco;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import modelo.Contato;
 
@@ -17,6 +18,7 @@ public class TelaAgenda extends javax.swing.JFrame {
 
     public TelaAgenda() {
         initComponents();
+        desabilitarDados();
         
     }
 
@@ -24,6 +26,7 @@ public class TelaAgenda extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenuItem3 = new javax.swing.JMenuItem();
         jTextField1 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
@@ -34,20 +37,27 @@ public class TelaAgenda extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         txtEndereco = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        txtTelefone = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         txtEmail = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         txtSexo = new javax.swing.JTextField();
+        txtTelefone = new javax.swing.JFormattedTextField();
         jPanel2 = new javax.swing.JPanel();
         btnNovo = new javax.swing.JButton();
         btnSalvar = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
+        btnAlterar = new javax.swing.JButton();
+        btnSair = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jMenuBar2 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        mnCodigo = new javax.swing.JMenuItem();
+        mnNome = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+
+        jMenuItem3.setText("jMenuItem3");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -63,9 +73,6 @@ public class TelaAgenda extends javax.swing.JFrame {
 
         jLabel2.setText("Nome:");
 
-        txtNome.setEditable(false);
-        txtNome.setBackground(new java.awt.Color(255, 255, 255));
-
         jLabel3.setText("Endereço:");
 
         jLabel4.setText("Telefone:");
@@ -73,6 +80,12 @@ public class TelaAgenda extends javax.swing.JFrame {
         jLabel5.setText("Email:");
 
         jLabel6.setText("Sexo:");
+
+        try {
+            txtTelefone.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("(##)#####-####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -155,14 +168,24 @@ public class TelaAgenda extends javax.swing.JFrame {
             }
         });
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/16x16-black-white-metro-delete-icon.png"))); // NOI18N
-        jButton4.setText("Excluir");
+        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/16x16-black-white-metro-delete-icon.png"))); // NOI18N
+        btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/Editar.png"))); // NOI18N
-        jButton5.setText("Alterar");
+        btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/Editar.png"))); // NOI18N
+        btnAlterar.setText("Alterar");
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
 
-        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/Desligar.png"))); // NOI18N
-        jButton6.setText("Sair");
+        btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/Desligar.png"))); // NOI18N
+        btnSair.setText("Sair");
 
         jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/entar.png"))); // NOI18N
         jButton7.setText("Voltar");
@@ -177,11 +200,11 @@ public class TelaAgenda extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnSalvar)
                 .addGap(18, 18, 18)
-                .addComponent(jButton4)
+                .addComponent(btnExcluir)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton5)
+                .addComponent(btnAlterar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton6)
+                .addComponent(btnSair)
                 .addGap(18, 18, 18)
                 .addComponent(jButton7)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -193,9 +216,9 @@ public class TelaAgenda extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNovo)
                     .addComponent(btnSalvar)
-                    .addComponent(jButton4)
-                    .addComponent(jButton5)
-                    .addComponent(jButton6)
+                    .addComponent(btnExcluir)
+                    .addComponent(btnAlterar)
+                    .addComponent(btnSair)
                     .addComponent(jButton7))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
@@ -213,6 +236,40 @@ public class TelaAgenda extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
+        jMenu1.setText("Consultar");
+        jMenu1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu1ActionPerformed(evt);
+            }
+        });
+
+        mnCodigo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        mnCodigo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/icon_alterar25.png"))); // NOI18N
+        mnCodigo.setText("Por Código");
+        mnCodigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnCodigoActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mnCodigo);
+
+        mnNome.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        mnNome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/icon_alterar25.png"))); // NOI18N
+        mnNome.setText("Por Nome");
+        mnNome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnNomeActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mnNome);
+
+        jMenuBar2.add(jMenu1);
+
+        jMenu2.setText("Ajudar");
+        jMenuBar2.add(jMenu2);
+
+        setJMenuBar(jMenuBar2);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -229,10 +286,11 @@ public class TelaAgenda extends javax.swing.JFrame {
                             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(63, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(2, 2, 2)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 555, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
+                .addGap(12, 12, 12))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -241,7 +299,7 @@ public class TelaAgenda extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -255,7 +313,76 @@ public class TelaAgenda extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-   try{
+      if(verificarDados()){
+          cadastro();
+          desabilitarDados();
+      }
+    }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+     limparDados();
+    }//GEN-LAST:event_btnNovoActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+         
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void mnNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnNomeActionPerformed
+        try{
+                  Banco banco = new Banco();
+                  Contato c = new Contato();
+                  c = banco.consultarporNome((JOptionPane.showInputDialog("Informe o nome a ser consultado?")));
+                  txtId.setText(String.valueOf(c.getIdContato()));
+                  txtNome.setText(c.getNome());
+                  txtEndereco.setText(c.getEndereco());
+                  txtEmail.setText(c.getEmail());
+                  txtTelefone.setText(c.getTelefone());
+                  txtSexo.setText(c.getSexo());
+              }catch(SQLException e){
+                  System.out.println("Error" +e.getMessage());
+              } catch(Exception e){
+                  System.out.println("Error" +e.getMessage());
+              }           
+    }//GEN-LAST:event_mnNomeActionPerformed
+
+    private void mnCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnCodigoActionPerformed
+              try{
+                  Banco banco = new Banco();
+                  Contato c = new Contato();
+                  c = banco.consultarporId(Integer.parseInt(JOptionPane.showInputDialog("Informe o código a ser consultado?")));
+                  txtId.setText(String.valueOf(c.getIdContato()));
+                  txtNome.setText(c.getNome());
+                  txtEndereco.setText(c.getEndereco());
+                  txtEmail.setText(c.getEmail());
+                  txtTelefone.setText(c.getTelefone());
+                  txtSexo.setText(c.getSexo());
+              }catch(SQLException e){
+                  System.out.println("Error" +e.getMessage());
+              } catch(Exception e){
+                  System.out.println("Error" +e.getMessage());
+              }           
+    }//GEN-LAST:event_mnCodigoActionPerformed
+
+    private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenu1ActionPerformed
+
+    public boolean verificarDados(){
+        if(!txtNome.getText().equals("")&&!txtEndereco.getText().equals("")&&
+           !txtEmail.getText().equals("")&&!txtTelefone.getText().equals("")
+           &&!txtSexo.getText().equals("")){
+            return true;
+        }else{
+            JOptionPane.showMessageDialog(null, "Os campos Nome ou Telefone não foram preenchidos");
+            return false;
+        } 
+    }
+    public void cadastro(){
+       try{
         Contato c = new Contato();
         c.setNome(txtNome.getText());
         c.setEndereco(txtEndereco.getText());
@@ -268,16 +395,36 @@ public class TelaAgenda extends javax.swing.JFrame {
     }catch(Exception ex){
         JOptionPane.showMessageDialog(null, ex.getMessage());
     }
-    }//GEN-LAST:event_btnSalvarActionPerformed
-
-    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+    }
+    
+    public void limparDados(){
+     habilitarDados();
      txtNome.setText("");
-       txtEndereco.setText("");
-       txtTelefone.setText("");
-       txtEmail.setText("");
-       txtSexo.setText("");
-    }//GEN-LAST:event_btnNovoActionPerformed
-
+     txtEndereco.setText("");
+     txtTelefone.setText("");
+     txtEmail.setText("");
+     txtSexo.setText("");
+     txtNome.requestFocus();
+    }
+    
+    public void habilitarDados(){
+        txtNome.setEditable(true);
+        txtEndereco.setEditable(true);
+        txtTelefone.setEditable(true);
+        txtEmail.setEditable(true);
+        txtSexo.setEditable(true);
+        btnAlterar.setEnabled(true);
+        
+    }
+    public void desabilitarDados(){
+        txtId.setEditable(false);
+        txtNome.setEditable(false);
+        txtEndereco.setEditable(false);
+        txtTelefone.setEditable(false);
+        txtEmail.setEditable(false);
+        txtSexo.setEditable(false);
+    }
+    
     public static void main(String args[]) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -303,12 +450,12 @@ public class TelaAgenda extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAlterar;
+    private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnNovo;
+    private javax.swing.JButton btnSair;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -316,16 +463,22 @@ public class TelaAgenda extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JMenuItem mnCodigo;
+    private javax.swing.JMenuItem mnNome;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtEndereco;
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtNome;
     private javax.swing.JTextField txtSexo;
-    private javax.swing.JTextField txtTelefone;
+    private javax.swing.JFormattedTextField txtTelefone;
     // End of variables declaration//GEN-END:variables
 }

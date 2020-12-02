@@ -13,6 +13,22 @@ public class Contato {
     private String email;
     private String sexo;
 
+    public Contato() {
+    }
+    
+    
+
+    public Contato(int idContato, String nome, String endereco, String telefone, String email, String sexo) {
+        this.idContato = idContato;
+        this.nome = nome;
+        this.endereco = endereco;
+        this.telefone = telefone;
+        this.email = email;
+        this.sexo = sexo;
+    }
+    
+    
+
     /**
      * @return the idContato
      */
