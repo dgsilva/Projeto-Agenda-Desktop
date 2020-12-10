@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import modelo.Contato;
 
 
+
 /**
  *
  * @author Diego
@@ -23,8 +24,8 @@ public class Banco {
      String sql = "insert into agenda(nome,endereco,telefone,email,sexo)"+
              "values(?,?,?,?,?)";
        PreparedStatement stmt= conexao.prepareStatement(sql);
-       stmt.setString(1,ctt.getNome());
-       stmt.setString(2,ctt.getEndereco());
+       stmt.setString(1,ctt.getNome().toUpperCase());
+       stmt.setString(2,ctt.getEndereco().trim());
        stmt.setString(3,ctt.getTelefone());
        stmt.setString(4,ctt.getEmail());
        stmt.setString(5,ctt.getSexo());
@@ -68,5 +69,25 @@ public class Banco {
        }
        return c;
    }
+ public void excluirContato(int id)throws Exception{
+      String sql = ("delete from agenda where id = '" + id + "'");
+      PreparedStatement stmt = this.conexao.prepareStatement(sql);
+      stmt.execute();
+      stmt.close();   
+ }
+  
+   public void alterarContato(Contato ctt)throws Exception{
+      String sql = ("update agenda set nome=?,endereco=?,telefone=?"
+              + ",email=?,sexo=? where id=?");
+      PreparedStatement stmt = this.conexao.prepareStatement(sql);
+      stmt.setString(1, ctt.getNome());
+      stmt.setString(2, ctt.getEndereco());
+      stmt.setString(3, ctt.getTelefone());
+      stmt.setString(4, ctt.getEmail());
+      stmt.setString(5, ctt.getSexo());
+      stmt.setInt(6, ctt.getIdContato());
+      stmt.execute();
+      stmt.close();  
+  }
 }
    

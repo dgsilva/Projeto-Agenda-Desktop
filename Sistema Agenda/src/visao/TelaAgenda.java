@@ -324,11 +324,48 @@ public class TelaAgenda extends javax.swing.JFrame {
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        
+     try{
+         Banco banco = new Banco();
+         banco.excluirContato(Integer.parseInt(JOptionPane.showInputDialog("Informe o código aser excluido")));
+         JOptionPane.showMessageDialog(null, "Excluido com sucesso");
+         limparDados();
+         desabilitarDados();
+         btnSair.setEnabled(true);
+         btnExcluir.setEnabled(false);
+         btnNovo.setEnabled(true);
+         btnAlterar.setEnabled(false);
+
+     }catch(Exception e){
+         System.out.println(e.getMessage());
+     }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-         
+        try{
+            int opcao = JOptionPane.showConfirmDialog(null, "Deseja realizar alteração no sistema?","Atenção",JOptionPane.YES_NO_OPTION);
+            if(opcao == JOptionPane.YES_OPTION){
+                Contato c= new Contato();
+                c.setIdContato(Integer.valueOf(txtId.getText()));
+                c.setNome(txtNome.getText());
+                c.setEndereco(txtEndereco.getText());
+                c.setTelefone(txtTelefone.getText());
+                c.setEmail(txtEmail.getText());
+                c.setSexo(txtSexo.getText());
+                Banco banco = new Banco();
+                banco.alterarContato(c);
+                JOptionPane.showMessageDialog(null, "Alteração Efetuada com Sucesso");
+                desabilitarDados();
+                btnAlterar.setEnabled(false);
+                btnNovo.setEnabled(true);
+                btnSair.setEnabled(true);                       
+            }else {
+               JOptionPane.showMessageDialog(null, "Alteração não realizada");
+               desabilitarDados();
+            }
+        } catch(Exception e){
+            //Ele mostra o erro no código
+          e.printStackTrace();
+        }
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void mnNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnNomeActionPerformed
@@ -376,10 +413,26 @@ public class TelaAgenda extends javax.swing.JFrame {
            !txtEmail.getText().equals("")&&!txtTelefone.getText().equals("")
            &&!txtSexo.getText().equals("")){
             return true;
-        }else{
-            JOptionPane.showMessageDialog(null, "Os campos Nome ou Telefone não foram preenchidos");
+        }else if(txtNome.getText().equals("")){
+            
+            JOptionPane.showMessageDialog(null, "Preencher o campo Nome");
             return false;
-        } 
+        } else if(txtEndereco.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Preencher o campo Endereco");
+            return false;
+           
+        }else if (txtTelefone.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Preencher o campo Telefone");
+            return false;
+        }else if(txtEmail.getText().equals("")){
+           JOptionPane.showMessageDialog(null, "Preencher o campo Telefone");
+            return false;
+        }else if(txtSexo.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Preencher o campo Telefone");
+            return false;
+        }else {
+            return false;
+        }
     }
     public void cadastro(){
        try{
