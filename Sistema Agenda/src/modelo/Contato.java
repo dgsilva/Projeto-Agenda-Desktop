@@ -1,6 +1,4 @@
-
 package modelo;
-
 /**
  *
  * @author Diego
@@ -15,9 +13,6 @@ public class Contato {
 
     public Contato() {
     }
-    
-    
-
     public Contato(int idContato, String nome, String endereco, String telefone, String email, String sexo) {
         this.idContato = idContato;
         this.nome = nome;
@@ -26,92 +21,19 @@ public class Contato {
         this.email = email;
         this.sexo = sexo;
     }
-    
-    
+    public int getIdContato() {return idContato;}
 
-    /**
-     * @return the idContato
-     */
-    public int getIdContato() {
-        return idContato;
-    }
+    public void setIdContato(int idContato) {this.idContato = idContato;}
+    public String getNome() {return nome;}
+    public void setNome(String nome) { this.nome = nome;}
+    public String getEndereco() {return endereco;}
+    public void setEndereco(String endereco){this.endereco = endereco;}
+    public String getTelefone(){return telefone;}
 
-    /**
-     * @param idContato the idContato to set
-     */
-    public void setIdContato(int idContato) {
-        this.idContato = idContato;
-    }
+    public void setTelefone(String telefone) {this.telefone = telefone;}
+    public String getEmail() {return email;}
 
-    /**
-     * @return the nome
-     */
-    public String getNome() {
-        return nome;
-    }
-
-    /**
-     * @param nome the nome to set
-     */
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    /**
-     * @return the endereco
-     */
-    public String getEndereco() {
-        return endereco;
-    }
-
-    /**
-     * @param endereco the endereco to set
-     */
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
-    }
-
-    /**
-     * @return the telefone
-     */
-    public String getTelefone() {
-        return telefone;
-    }
-
-    /**
-     * @param telefone the telefone to set
-     */
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
-    /**
-     * @return the email
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * @param email the email to set
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    /**
-     * @return the sexo
-     */
-    public String getSexo() {
-        return sexo;
-    }
-
-    /**
-     * @param sexo the sexo to set
-     */
-    public void setSexo(String sexo) {
-        this.sexo = sexo;
-    }
-    
-    
+    public void setEmail(String email) {this.email = email;}
+    public String getSexo() { return sexo;}
+    public void setSexo(String sexo) {this.sexo = sexo;}
 }
