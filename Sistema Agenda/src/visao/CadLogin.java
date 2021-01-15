@@ -44,7 +44,7 @@ public class CadLogin extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        mnCodigo = new javax.swing.JMenuItem();
+        mnCCodigo = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -101,14 +101,19 @@ public class CadLogin extends javax.swing.JFrame {
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -20, 830, 440));
 
         jMenu1.setText("Consultar");
-
-        mnCodigo.setText("Código");
-        mnCodigo.addActionListener(new java.awt.event.ActionListener() {
+        jMenu1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnCodigoActionPerformed(evt);
+                jMenu1ActionPerformed(evt);
             }
         });
-        jMenu1.add(mnCodigo);
+
+        mnCCodigo.setText("Código");
+        mnCCodigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnCCodigoActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mnCCodigo);
 
         jMenuBar1.add(jMenu1);
 
@@ -117,12 +122,23 @@ public class CadLogin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void mnCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnCodigoActionPerformed
-        
-    }//GEN-LAST:event_mnCodigoActionPerformed
+    private void mnCCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnCCodigoActionPerformed
+        try{
+            Banco banco = new Banco();
+            Login l = new Login();
+            l = banco.consultarporLoginId(Integer.parseInt(JOptionPane.showInputDialog("Informe o código ")));
+           txtCodigo.setText(String.valueOf(l.getCodigo()));
+           txtLogin.setText(l.getNomeUsuario());
+            txtSenha.setText(l.getSenha());
+        }catch(SQLException e){
+         System.out.println("Error" +e.getMessage());
+        }catch(Exception e){
+            System.out.println("Error" +e.getMessage());
+        }
+    }//GEN-LAST:event_mnCCodigoActionPerformed
 
     private void txtCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoActionPerformed
-        // TODO add your handling code here:
+       
     }//GEN-LAST:event_txtCodigoActionPerformed
 
     private void txtLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLoginActionPerformed
@@ -130,16 +146,44 @@ public class CadLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_txtLoginActionPerformed
 
     private void btnCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastroActionPerformed
-         
+          try {
+            Login l = new Login();
+            l.setNomeUsuario(txtLogin.getText());
+            l.setSenha(txtSenha.getText());
+            Banco dao = new Banco();
+            dao.adicionaradm(l);
+            JOptionPane.showMessageDialog(null, "Foi cadastro com sucesso");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+                 
     }//GEN-LAST:event_btnCadastroActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-   
+   try{
+            int opcao = JOptionPane.showConfirmDialog(null, "Deseja realizar alteração no sistema?","Atenção",JOptionPane.YES_NO_OPTION);
+            if(opcao == JOptionPane.YES_OPTION){
+               Login l= new Login();
+                l.setCodigo(Integer.valueOf(txtCodigo.getText()));
+                l.setNomeUsuario(txtLogin.getText());
+                l.setSenha(txtSenha.getText());
+                Banco banco = new Banco();
+                banco.alterarLogin(l);
+                JOptionPane.showMessageDialog(null, "Alteração Efetuada com Sucesso");                       
+            }else{
+               JOptionPane.showMessageDialog(null, "Alteração não realizada");
+            }
+        } catch(Exception e){
+            //Ele mostra o erro no código
+          e.printStackTrace();
+        }
+    
     }//GEN-LAST:event_btnAlterarActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenu1ActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -181,7 +225,7 @@ public class CadLogin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem mnCodigo;
+    private javax.swing.JMenuItem mnCCodigo;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtLogin;
     private javax.swing.JTextField txtSenha;

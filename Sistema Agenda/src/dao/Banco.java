@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import modelo.Acesso;
 import modelo.Contato;
 import modelo.Login;
@@ -106,7 +108,7 @@ public class Banco {
    
    public boolean ValidarLogin(String nomeUsuario,String senha)throws Exception{
        boolean autenticado = false;
-       String sql = "select * from login where nome_usuario =? and senha =?";
+       String sql = "select * from login where nome_usuario =? and senha =md5(?)";
        PreparedStatement stmt = conexao.prepareStatement(sql);
        stmt.setString(1, nomeUsuario);
        stmt.setString(2, senha);
@@ -123,6 +125,65 @@ public class Banco {
        return autenticado;
        
    }
+   
+   public void adicionaradm(Login l )throws SQLException{
+       String sql = "insert into login(nome_usuario,senha)"
+               + "values(?,md5(?))";
+       PreparedStatement stmt = conexao.prepareStatement(sql);
+       stmt.setString(1,l.getNomeUsuario());
+       stmt.setString(2,l.getSenha());
+       stmt.execute();
+       stmt.close();
+   }
+   
+   
+    public Login consultarporLoginId(int codigo) throws Exception {
+        Login l = new Login();
+        String pesq = ("select * from login where codigo= ?");
+        PreparedStatement stmt = this.conexao.prepareStatement(pesq);
+        stmt.setInt(1, codigo);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            l.setCodigo(Integer.parseInt(rs.getString("codigo")));
+            l.setNomeUsuario(rs.getString("nome_usuario"));
+            l.setSenha(rs.getString("senha"));
+            rs.close();
+
+        }
+        return l;
+    }
  
+    public void alterarLogin(Login l) throws Exception {
+        String sql = ("update login set nome_usuario=?,senha=? where codigo=?");
+        PreparedStatement stmt = this.conexao.prepareStatement(sql);
+        stmt.setString(1, l.getNomeUsuario());
+        stmt.setString(2, l.getSenha());
+        stmt.setInt(3, l.getCodigo());
+        stmt.execute();
+        stmt.close();
+    }
+    
+    //Lista de Contatos
+    
+    public List<Contato> getLista(String nome)throws SQLException{
+        String sql = "select * from agenda where nome ilike ? ";
+        PreparedStatement stmt = this.conexao.prepareStatement(sql);
+        stmt.setString(1, nome);
+        ResultSet rs = stmt.executeQuery();
+        List<Contato>minhaLista = new ArrayList<>();
+        while(rs.next()){
+            Contato c = new Contato();
+            c.setIdContato(Integer.valueOf(rs.getInt("id")));
+            c.setNome(rs.getString("nome"));
+            c.setEndereco(rs.getString("endereco"));
+            c.setEmail(rs.getString("email"));
+            c.setTelefone(rs.getString("telefone"));
+            c.setSexo(rs.getString("sexo"));
+            minhaLista.add(c);
+        }
+        rs.close();
+        stmt.close();
+        return minhaLista;
+    }
 }
    

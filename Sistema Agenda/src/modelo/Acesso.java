@@ -13,7 +13,7 @@ public class Acesso {
 
     public Acesso() {
      SimpleDateFormat sdf = new SimpleDateFormat("kk:mm:ss");
-     SimpleDateFormat sdf2 = new SimpleDateFormat("dd/mm/yyyy");
+     SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy");
      dataAcesso = sdf2.format(new Date());
      horaAcesso = sdf.format(new Date().getTime());
     }

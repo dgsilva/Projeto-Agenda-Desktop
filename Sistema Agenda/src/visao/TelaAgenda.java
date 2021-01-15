@@ -2,12 +2,28 @@
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        }    @Override
+    public void valueChanged(ListSelectionEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
  */
 package visao;
 
 import dao.Banco;
 import java.sql.SQLException;
+import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+
 import modelo.Contato;
 
 /**
@@ -16,6 +32,13 @@ import modelo.Contato;
  */
 public class TelaAgenda extends javax.swing.JFrame {
 
+    DefaultTableModel tmContato = new DefaultTableModel(null, new String[]{"ID","Nome","Endereco","Email","Telefone","Sexo"});
+    List<Contato>contatos;
+    ListSelectionModel lsmContato;
+    
+    
+    
+    
     public TelaAgenda() {
         initComponents();
         desabilitarDados();
@@ -27,8 +50,8 @@ public class TelaAgenda extends javax.swing.JFrame {
     private void initComponents() {
 
         jMenuItem3 = new javax.swing.JMenuItem();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        txtPesquisa = new javax.swing.JTextField();
+        btnPesquisar = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
@@ -50,7 +73,7 @@ public class TelaAgenda extends javax.swing.JFrame {
         btnSair = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblContatos = new javax.swing.JTable();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         mnCodigo = new javax.swing.JMenuItem();
@@ -61,8 +84,13 @@ public class TelaAgenda extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/Pesquisar.png"))); // NOI18N
-        jButton1.setText("Pesquisar");
+        btnPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/Pesquisar.png"))); // NOI18N
+        btnPesquisar.setText("Pesquisar");
+        btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisarActionPerformed(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Agenda", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14), new java.awt.Color(0, 102, 255))); // NOI18N
 
@@ -223,18 +251,18 @@ public class TelaAgenda extends javax.swing.JFrame {
                 .addContainerGap(26, Short.MAX_VALUE))
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+        tblContatos.setModel(tmContato);
+        tblContatos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        lsmContato = tblContatos.getSelectionModel();
+        lsmContato.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent e){
+                if(!e.getValueIsAdjusting()){
+                    tblContatosLinhaSelecionada(tblContatos);
+                }
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+
+        });
+        jScrollPane1.setViewportView(tblContatos);
 
         jMenu1.setText("Consultar");
         jMenu1.addActionListener(new java.awt.event.ActionListener() {
@@ -287,9 +315,9 @@ public class TelaAgenda extends javax.swing.JFrame {
                 .addContainerGap(63, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(2, 2, 2)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 555, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 555, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
+                .addComponent(btnPesquisar, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
                 .addGap(12, 12, 12))
         );
         layout.setVerticalGroup(
@@ -297,8 +325,8 @@ public class TelaAgenda extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(txtPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnPesquisar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -408,6 +436,14 @@ public class TelaAgenda extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenu1ActionPerformed
 
+    private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
+       try{
+           ListarContatos();
+       }catch(Exception ex){
+           JOptionPane.showMessageDialog(null,"Erro no campo de Pesquisa" + ex.getMessage());
+       }
+    }//GEN-LAST:event_btnPesquisarActionPerformed
+
     public boolean verificarDados(){
         if(!txtNome.getText().equals("")&&!txtEndereco.getText().equals("")&&
            !txtEmail.getText().equals("")&&!txtTelefone.getText().equals("")
@@ -478,6 +514,48 @@ public class TelaAgenda extends javax.swing.JFrame {
         txtSexo.setEditable(false);
     }
     
+    private void mostraPesquisa(List<Contato> contatos){
+        while(tmContato.getRowCount()>0){
+            tmContato.removeRow(0);
+        }
+        if(contatos.size() == 0){
+            JOptionPane.showMessageDialog(null, "Nenhum Contato Cadastrado");
+        }else{
+            String [] linha = new String[]{null,null,null,null,null,null};
+            for(int i = 0; i<contatos.size(); i++){
+                tmContato.addRow(linha);
+                tmContato.setValueAt(contatos.get(i).getIdContato(), i, 0);
+                tmContato.setValueAt(contatos.get(i).getNome(), i, 1);
+                tmContato.setValueAt(contatos.get(i).getEndereco(),i, 2);
+                tmContato.setValueAt(contatos.get(i).getEmail(), i, 3);
+                tmContato.setValueAt(contatos.get(i).getTelefone(), i, 4);
+                tmContato.setValueAt(contatos.get(i).getSexo(), i, 5);
+            }
+        }
+    }
+    
+    public void ListarContatos() throws Exception {
+        Banco dao = new Banco();
+        contatos = dao.getLista("%" + txtPesquisa.getText() + "%");
+        mostraPesquisa(contatos);
+    }
+    
+    
+    private void tblContatosLinhaSelecionada(JTable tabela){
+        if(tblContatos.getSelectedRow()!= -1){
+            habilitarDados();
+            txtId.setText(String.valueOf(contatos.get(tabela.getSelectedRow()).getIdContato()));
+            txtNome.setText(contatos.get(tabela.getSelectedRow()).getNome());
+            txtEndereco.setText(contatos.get(tabela.getSelectedRow()).getEndereco());
+            txtTelefone.setText(contatos.get(tabela.getSelectedColumn()).getTelefone());
+            txtEmail.setText(contatos.get(tabela.getSelectedColumn()).getEmail());
+            txtSexo.setText(contatos.get(tabela.getSelectedColumn()).getSexo());
+        }else{
+            limparDados();
+        }
+    }
+    
+    
     public static void main(String args[]) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -506,9 +584,9 @@ public class TelaAgenda extends javax.swing.JFrame {
     private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnNovo;
+    private javax.swing.JButton btnPesquisar;
     private javax.swing.JButton btnSair;
     private javax.swing.JButton btnSalvar;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -523,14 +601,14 @@ public class TelaAgenda extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JMenuItem mnCodigo;
     private javax.swing.JMenuItem mnNome;
+    private javax.swing.JTable tblContatos;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtEndereco;
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtNome;
+    private javax.swing.JTextField txtPesquisa;
     private javax.swing.JTextField txtSexo;
     private javax.swing.JFormattedTextField txtTelefone;
     // End of variables declaration//GEN-END:variables
