@@ -74,6 +74,7 @@ public class TelaAgenda extends javax.swing.JFrame {
         jButton7 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblContatos = new javax.swing.JTable();
+        btnEditarTabela = new javax.swing.JButton();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         mnCodigo = new javax.swing.JMenuItem();
@@ -264,6 +265,13 @@ public class TelaAgenda extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tblContatos);
 
+        btnEditarTabela.setText("Editar");
+        btnEditarTabela.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarTabelaActionPerformed(evt);
+            }
+        });
+
         jMenu1.setText("Consultar");
         jMenu1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -303,22 +311,23 @@ public class TelaAgenda extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 607, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(63, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(2, 2, 2)
                 .addComponent(txtPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 555, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnPesquisar, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
+                .addComponent(btnPesquisar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(12, 12, 12))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 607, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnEditarTabela, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -332,7 +341,9 @@ public class TelaAgenda extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEditarTabela))
                 .addContainerGap())
         );
 
@@ -443,6 +454,16 @@ public class TelaAgenda extends javax.swing.JFrame {
            JOptionPane.showMessageDialog(null,"Erro no campo de Pesquisa" + ex.getMessage());
        }
     }//GEN-LAST:event_btnPesquisarActionPerformed
+
+    private void btnEditarTabelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarTabelaActionPerformed
+           try {
+            alterarTabelaPaciente();
+            ListarContatos();
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Problema durante a alteração" + ex);
+        }
+    }//GEN-LAST:event_btnEditarTabelaActionPerformed
 
     public boolean verificarDados(){
         if(!txtNome.getText().equals("")&&!txtEndereco.getText().equals("")&&
@@ -555,6 +576,22 @@ public class TelaAgenda extends javax.swing.JFrame {
         }
     }
     
+    private void alterarTabelaPaciente() throws Exception {
+        if (tblContatos.getSelectedRow() != -1) {
+            if (verificarDados()) {
+                Contato c = new Contato();
+                Banco dao = new Banco();
+                c.setIdContato(Integer.valueOf(txtId.getText()));
+                c.setNome(String.valueOf(txtNome.getText()));
+                c.setEndereco(String.valueOf(txtEndereco.getText()));
+                c.setEmail(String.valueOf(txtEmail.getText()));
+                c.setTelefone(String.valueOf(txtTelefone.getText()));
+                c.setSexo(String.valueOf(txtSexo.getText()));
+                dao.alterarContato(c);
+                JOptionPane.showMessageDialog(null, "Dados alterados com sucesso");
+            }
+        }
+    }
     
     public static void main(String args[]) {
         try {
@@ -582,6 +619,7 @@ public class TelaAgenda extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterar;
+    private javax.swing.JButton btnEditarTabela;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnNovo;
     private javax.swing.JButton btnPesquisar;
